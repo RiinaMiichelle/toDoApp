@@ -1,11 +1,18 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import { object } from 'prop-types';
 
-class App extends React.Component {
-  constructor() {
-    super()
+const TodoItem = (props) => {
+  const { todo, onDeleteTodo } = props;
+  return (
+    <li>
+      {todo}
+      <button onClick={onDeleteTodo}>Delete ToDo</button>
+    </li>
+  )
+}
+
+class TodoList extends React.Component {
+  constructor(props) {
+    super(props)
     this.state = {
       isClicked: false,
       todoInput: " ",
@@ -37,24 +44,28 @@ class App extends React.Component {
   }
 
   render() {
+    const todoItems = this.state.todos.map((todo, index) => {
+      return (
+        <TodoItem
+          todo={todo}
+          onDeleteTodo={() => this.onClickDelete(index)}
+          key={index}
+        />
+      )
+    })
+
+    console.log(todoItems)
+
     return (
       <div>
         <input value={this.state.todoInput} onChange={this.upDateTodo}></input>
         <button onClick={this.handleButtonClick}>Submit ToDo</button>
         <ul>
-          {this.state.todos.map((todos, index) => {
-            return (
-            <li key={index}>{todos}
-              <button onClick={()=>{
-                this.onClickDelete(index)
-              }}>Delete ToDo</button>
-            </li>
-            )
-          })}
+          {todoItems}
         </ul>
       </div>
     );
   }
 }
 
-export default App;
+export default TodoList;
